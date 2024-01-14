@@ -25,10 +25,15 @@
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="login-option">
-                        <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'userRegister' %}">Register</a>
-                        <a class="cs-color cs-popup-joinus-btn login-popup" href="#">Login</a>
-                        <a class="get-start-btn" href="register-restaurant.html">
-                            Register Restaurant </a>
+                        {% if not user.is_authenticated %}
+                            <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'userRegister' %}">Register</a>
+                            <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'login' %}">Sign in</a>
+                            <a class="get-start-btn" href="{% url 'vendorRegister' %}">Register Restaurant </a>
+                        {% else %}
+                            <a class="cs-color cs-popup-joinus-btn login-popup" href="{% url 'myAccount' %}">my account</a>
+                            <a class="cs-color cs-popup-joinus-btn login-popup text-danger" href="{% url 'logout' %}">Logout</a>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>

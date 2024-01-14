@@ -40,10 +40,10 @@ class UserManager(BaseUserManager):
         return user
     
 class User(AbstractUser):
-    RESTURANT=1
+    VENDOR=1
     CUSTOMER=2
     ROLE_CHOICES = (
-        (RESTURANT,'resturant'),
+        (VENDOR,'vendor'),
         (CUSTOMER,'customer'),
     )
     first_name = models.CharField(max_length=50)
@@ -71,12 +71,22 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+    
+    def get_full_name(self):
+        return f'{self.first_name} {self.last_name}'
 
     def has_perm(self, perm, obj=None):
         return self.is_admin
     
     def has_module_perms(self, app_label):
         return True
+    
+    def get_role(self):
+        if self.role == 1:
+            user_role = 'vendor'
+        elif self.role == 2:
+            user_role = 'customer'
+        return user_role
     
 
 class UserProfile(models.Model):
