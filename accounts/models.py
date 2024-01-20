@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db.models.fields.related import OneToOneField, ForeignKey
+from django.utils.safestring import mark_safe
 
 
 # Create your models here.
@@ -107,5 +108,16 @@ class UserProfile(models.Model):
     def __str__(self):
         return str(self.user.username)
     
+    def image_tag(self):
+        if self.profile_picture:
+            return mark_safe(f'<img src="{self.profile_picture.url}" height="50"/>')
+        else:
+            return ""
+    image_tag.short_description = 'Image'
 
-        
+    def image_tag2(self):
+        if self.cover_picture:
+            return mark_safe(f'<img src="{self.cover_picture.url}" height="50"/>')
+        else:
+            return ""
+    image_tag.short_description = 'Image'    

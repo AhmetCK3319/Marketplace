@@ -12,6 +12,10 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ()
     fieldsets = ()
 
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user','image_tag','image_tag2') 
+    list_display_links = ('user','image_tag','image_tag2')
+
 # Register your models here.
 admin.site.register(User,CustomUserAdmin)
-admin.site.register(UserProfile)
+admin.site.register(UserProfile,UserProfileAdmin)

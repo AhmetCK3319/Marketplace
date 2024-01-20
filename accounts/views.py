@@ -7,10 +7,12 @@ from django.contrib import auth
 from .utils import detectUser,send_verification_email
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
+from vendor.models import Vendor
 # smtp configuration
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
-from django.core.exceptions import ObjectDoesNotExist
+
 
 def check_role_vendor(user):
     if user.role == 1:
@@ -215,5 +217,6 @@ def custDashboard(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def vendorDashboard(request):
+    
     return render(request,'accounts/vendorDashboard.html')
 
