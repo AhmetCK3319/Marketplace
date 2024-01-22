@@ -28,11 +28,11 @@ class Vendor(models.Model):
                     }
                 if self.is_approved == True:
                     #send notification_email
-                    mail_subject = 'Congratulations ! Your Restaurant has been approved.'
+                    mail_subject = 'Tebrikler ! Restoranınız onaylandı.'
                     send_notification(mail_subject,mail_template,context)
                 else:
                     #send notification_email
-                    mail_subject = "We're sorry ! You are not eligible for pubkishing your food menu on our marketplace."
+                    mail_subject = "Üzgünüz ! Yemek menünüzü pazaryerimizde yayınlamaya uygun değilsiniz."
                     send_notification(mail_subject,mail_template,context)  
 
         return super(Vendor,self).save(*args,**kwargs)             

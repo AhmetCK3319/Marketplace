@@ -7,4 +7,4 @@ def allow_only_images_validator(value):
     valid_extensions = [ '.png','.jpg','.jpeg']
 
     if not ext.lower() in valid_extensions:
-        raise ValidationError('Unsported file extensions.Allowed extensions'+ str(valid_extensions))
+        raise ValidationError('Desteklenmeyen dosya uzantıları.İzin verilen uzantılar :'+ str(valid_extensions))
