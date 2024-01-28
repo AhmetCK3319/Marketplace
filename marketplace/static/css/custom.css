@@ -27,3 +27,15 @@
     font-size: 12px;
     cursor: pointer;
 }
+.btn.btn-secondary{
+
+    padding: 2px 1.75em;
+    font-size: 12px;
+    cursor: pointer;
+}
+.btn.btn-danger{
+
+    padding: 2px 1.75em;
+    font-size: 12px;
+    cursor: pointer;
+}
