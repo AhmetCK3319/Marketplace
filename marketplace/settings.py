@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'vendor',
     'menu',
+    'market',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +71,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_vendor',
+                'market.context_processors.get_cart_counter',
                 #'accounts.context_processors.get_google_api',
 
             ],

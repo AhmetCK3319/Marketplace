@@ -120,3 +120,6 @@ class UserProfile(models.Model):
         else:
             return ""
     image_tag.short_description = 'Image'    
+
+    def full_adress(self):
+        return f'{self.city} {self.state} {self.country}'

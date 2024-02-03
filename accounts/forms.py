@@ -21,15 +21,19 @@ class UserProfileForm(forms.ModelForm):
     profile_picture = forms.FileField(widget=forms.FileInput(attrs={'class':'btn btn-info'}),validators=[allow_only_images_validator])
     cover_picture = forms.FileField(widget=forms.FileInput(attrs={'class':'btn btn-info'}),validators=[allow_only_images_validator])
 
-    latitude  = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
-    longitude  = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    ###### google maps kullanıldığı zaman latitude ve longitude alanları readonly yani sadece okunur olacak müdahele engellenecek ###
+
+    # latitude  = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
+    # longitude  = forms.CharField(widget=forms.TextInput(attrs={'readonly':'readonly'}))
 
     class Meta:
         model = UserProfile   
         fields = ['profile_picture','cover_picture','city','address','state','country','pin_code','latitude','longitude']
     
-    def __init__(self,*args,**kwargs):
-        super(UserProfileForm,self).__init__(*args,**kwargs)
-        for field in self.fields:
-            if field == 'latitude' or field == 'longitude':
-                self.fields[field].widget.attrs['readonly'] = 'readonly'
+    # latitude ve longitude alanları sadece okunur şekilde ayarlamak için
+
+    # def __init__(self,*args,**kwargs):
+    #     super(UserProfileForm,self).__init__(*args,**kwargs)
+    #     for field in self.fields:
+    #         if field == 'latitude' or field == 'longitude':
+    #             self.fields[field].widget.attrs['readonly'] = 'readonly'
