@@ -72,6 +72,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_vendor',
                 'market.context_processors.get_cart_counter',
+                'market.context_processors.get_cart_amounts'
                 #'accounts.context_processors.get_google_api',
 
             ],
