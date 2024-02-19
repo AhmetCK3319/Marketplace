@@ -19,6 +19,7 @@ from django.urls import path,include
 from marketplace import views
 from django.conf import settings
 from django.conf.urls.static import static
+from market import views as marketviews
 
 
 urlpatterns = [
@@ -28,6 +29,8 @@ urlpatterns = [
     path('accounts/',include('accounts.urls')),
     path('menu/',include('menu.urls')),
     path('market/',include('market.urls')),
+    path('search/',marketviews.search,name='search'),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

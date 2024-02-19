@@ -36,7 +36,11 @@
                                                             <a href="#"><img src="{% static 'extra-images/blogs-food-bakery-17.jpg' %}" class="img-list wp-post-image" alt="default profile_picture"></a>
                                                         {% endif %}
                                                     </figure>
+                                                    {% if not market.is_open %}
                                                     <span class="restaurant-status close"><em class="bookmarkRibbon"></em>Close</span>
+                                                    {% else %}
+                                                    <span class="restaurant-status open"><em class="bookmarkRibbon"></em>Open</span>
+                                                    {% endif %}
                                                 </div>
                                                 <div class="text-holder">
                                                     <div class="list-rating">

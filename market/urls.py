@@ -12,5 +12,6 @@ path('decrease_to_cart/<int:food_id>/',views.decrease_to_cart,name='decrease_to_
 # delete cart item
 path('delete_to_cart/<int:food_id>/',views.delete_to_cart,name='delete_to_cart'),
 
+
 ]
 

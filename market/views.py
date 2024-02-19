@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from vendor.models import Vendor
+from vendor.models import Vendor,OpeningHour
 from menu.models import Category, FoodItem
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
@@ -8,6 +8,8 @@ from .models import Cart
 from .context_processors import get_cart_counter,get_cart_amounts
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q 
+from datetime import date,datetime
 
 # Create your views here.
 
@@ -31,6 +33,13 @@ def market_detail(request,vendor_slug):
             queryset = FoodItem.objects.filter(is_available=True),
         )
     )
+    # current day 
+      #check current day's opening hours.
+    date_today = date.today()
+    today=date_today.isoweekday()
+    current_opening_hours = OpeningHour.objects.filter(vendor=vendor,day=today)
+   
+    opening_hour = OpeningHour.objects.filter(vendor=vendor).order_by('day','-from_hour')
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
     else:
@@ -40,6 +49,8 @@ def market_detail(request,vendor_slug):
         'vendor':vendor,
         'categories':categories,
         'cart_items':cart_items,
+        'opening_hour':opening_hour,
+        'current_opening_hours':current_opening_hours,
     }
     return render(request,'market/market_detail.html',context)
 
@@ -91,10 +102,10 @@ def decrease_to_cart(request,food_id):
                     else:
                         chkCart.delete()
                         chkCart.quantity = 0    
-                    return JsonResponse({'status': 'success', 'cart_counter':get_cart_counter(request),'qty' : chkCart.quantity})
+                    return JsonResponse({'status': 'success', 'cart_counter':get_cart_counter(request),'qty' : chkCart.quantity,'cart_amount':get_cart_amounts(request)})
                 except Cart.DoesNotExist:
                     Cart.objects.create(user=request.user, fooditem=fooditem, quantity=1)
-                    return JsonResponse({'status': 'Failed', 'message': 'you do not have this item in your cart !','cart_counter':get_cart_counter(request),})
+                    return JsonResponse({'status': 'Failed', 'message': 'you do not have this item in your cart !','cart_counter':get_cart_counter(request),'cart_amount':get_cart_amounts(request)})
 
             except FoodItem.DoesNotExist:
                 return JsonResponse({'status': 'Failed', 'message': 'This food does not exist'})
@@ -131,4 +142,21 @@ def delete_to_cart(request,food_id):
         else:
             return JsonResponse({'status':'Failed','message':'İnvalid Request'})        
         
+
+
+def search(request):
+    address = request.GET['address']
+    # latitude = request.GET['lat']
+    # longitude = request.GET['lng']
+    radius = request.GET['radius']
+    keyword = request.GET['keyword']
+
+    fooditems = FoodItem.objects.filter(food_title__icontains = keyword,is_available = True).values_list('vendor',flat=True)
+    vendors = Vendor.objects.filter(Q(id__in = fooditems) | Q(vendor_name__icontains = keyword, is_approved = True, user__is_active = True))
+    vendor_count = vendors.count()
+    context = {
+        'vendors':vendors,
+        'vendor_count':vendor_count,
+    }
+    return render(request,'market/listining.html',context)      
       

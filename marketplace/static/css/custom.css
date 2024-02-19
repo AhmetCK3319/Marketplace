@@ -39,3 +39,13 @@
     font-size: 12px;
     cursor: pointer;
 }
+.main-search.fancy .field-holder input[type="text"] {
+    color: rgb(0, 0, 0);
+}
+
+table > tbody > tr > td {
+    border: none !important;
+}
+#opening_hour select {
+    padding: 5px 10px !important;
+}
