@@ -96,9 +96,10 @@ $(document).ready(function(){
 
                     applyCartAmounts(
                         response.cart_amount['sub_total'],
-                        response.cart_amount['tax'],
+                        response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total'],
                     )
+                    console.log(response.cart_amount['tax_dict']);
                 }
 
             }
@@ -138,12 +139,14 @@ $(document).ready(function(){
 
                         applyCartAmounts(
                             response.cart_amount['sub_total'],
-                            response.cart_amount['tax'],
+                            response.cart_amount['tax_dict'],
                             response.cart_amount['grand_total'],
                         )
 
-                        removeCartItem(response.qty,cart_id);
-                        checkEmptyCart();
+                        if(window.location.pathname == '/cart/'){
+                            removeCartItem(response.qty,cart_id);
+                            checkEmptyCart();
+                        }
                         
                     }   
                 }
@@ -176,7 +179,7 @@ $(document).ready(function(){
 
                     applyCartAmounts(
                         response.cart_amount['sub_total'],
-                        response.cart_amount['tax'],
+                        response.cart_amount['tax_dict'],
                         response.cart_amount['grand_total'],
                     )
 
@@ -207,11 +210,18 @@ $(document).ready(function(){
     }
 
 
-    function applyCartAmounts( sub_total, tax, grand_total ){
+    function applyCartAmounts( sub_total, tax_dict, grand_total ){
         if(window.location.pathname == '/cart/'){
             $('#total').html(sub_total)
-            $('#tax').html(tax)
             $('#grandtotal').html(grand_total)
+
+            console.log(tax_dict)
+            for(key1 in tax_dict ){
+                console.log(tax_dict[key1])
+                for(key2 in tax_dict[key1]){
+                    $('#tax-'+key1).html(tax_dict[key2][key2])
+                }
+            }
         }
     }
 
