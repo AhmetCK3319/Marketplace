@@ -30,6 +30,8 @@ urlpatterns = [
     path('menu/',include('menu.urls')),
     path('market/',include('market.urls')),
     path('search/',marketviews.search,name='search'),
+    path('vendor/',include('vendor.urls')),
+    path('customer/',include('customers.urls')),
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
