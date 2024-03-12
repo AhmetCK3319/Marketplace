@@ -1,4 +1,6 @@
 from django.shortcuts import render,redirect
+from accounts.models import UserProfile
+from orders.forms import OrderForm
 from vendor.models import Vendor,OpeningHour
 from menu.models import Category, FoodItem
 from django.shortcuts import get_object_or_404
@@ -63,22 +65,21 @@ def add_to_cart(request, food_id):
             # Check if the food item exists
             try:
                 fooditem = FoodItem.objects.get(id=food_id)
-                chkCart = None
-                # Check if the food item is already in the cart
+                # Check if the user has already added that food to the cart
                 try:
                     chkCart = Cart.objects.get(user=request.user, fooditem=fooditem)
+                    # Increase the cart quantity
                     chkCart.quantity += 1
                     chkCart.save()
-                    return JsonResponse({'status': 'success', 'message': 'Increase the cart quantity','cart_counter':get_cart_counter(request),'qty':chkCart.quantity,'cart_amount':get_cart_amounts(request)})
-                except Cart.DoesNotExist:
+                    return JsonResponse({'status': 'Success', 'message': 'Increased the cart quantity', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity, 'cart_amount': get_cart_amounts(request)})
+                except:
                     chkCart = Cart.objects.create(user=request.user, fooditem=fooditem, quantity=1)
-                    return JsonResponse({'status': 'success', 'message': 'Added the food to the cart','cart_counter':get_cart_counter(request),'qty':chkCart.quantity,'cart_amount':get_cart_amounts(request)})
-
-            except FoodItem.DoesNotExist:
-                return JsonResponse({'status': 'Failed', 'message': 'This food does not exist'})
-
+                    return JsonResponse({'status': 'Success', 'message': 'Added the food to the cart', 'cart_counter': get_cart_counter(request), 'qty': chkCart.quantity, 'cart_amount': get_cart_amounts(request)})
+            except:
+                return JsonResponse({'status': 'Failed', 'message': 'This food does not exist!'})
         else:
-            return JsonResponse({'status': 'Failed', 'message': 'Invalid request'})
+            return JsonResponse({'status': 'Failed', 'message': 'Invalid request!'})
+        
     else:
         return JsonResponse({'status': 'login_required', 'message': 'Please login to continue'})
     
@@ -159,4 +160,34 @@ def search(request):
         'vendor_count':vendor_count,
     }
     return render(request,'market/listining.html',context)      
+
+
+
+login_required(login_url='login')
+def checkout(request):
+    cart_items = Cart.objects.filter(user = request.user).order_by('created_at')
+    cart_count = cart_items.count()
+    if cart_count <= 0 :
+        return redirect('market')
+    user_profile = UserProfile.objects.get(user=request.user)
+    default_value = {
+        'first_name':request.user.first_name,
+        'last_name':request.user.last_name,
+        'phone':request.user.phone_number,
+        'email':request.user.email,
+        'address':user_profile.address,
+        'country':user_profile.country,
+        'state':user_profile.state,
+        'city':user_profile.city,
+        'pin_code':user_profile.pin_code,
+    }
+    form = OrderForm(initial=default_value)
+    if request.method == 'POST' and form.is_valid:
+        form.save()
+
+    context = {
+        'form':form,
+        'cart_items':cart_items,
+    }
+    return render(request,'market/checkout.html',context)
       

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'menu',
     'market',
     'customers',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -170,3 +171,7 @@ DEFAULT_FROM_EMAIL  = 'Marketplace <ahmetcankoca1990@hotmail.com>'
 
 
 # GOOGLE_API_KEY = ''
+
+# PAYPAL_CLIENT_ID = ''
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = 'same-origin-allow-popups'
